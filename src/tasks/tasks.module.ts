@@ -4,6 +4,6 @@ import { TasksService } from './tasks.service';
 
 @Module({
   controllers: [TasksController],
-  providers: [TasksService]
+  providers: [TasksService] //Elements that can be injected, services can be providers, but not all providers are services
 })
 export class TasksModule {}
