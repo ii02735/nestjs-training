@@ -1,4 +1,6 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { create } from 'domain';
+import { CreateTaskDto } from './dto/create-task.dto';
 import { Task } from './task.model';
 import { TasksService } from './tasks.service';
 
@@ -25,9 +27,22 @@ export class TasksController {
         console.log('body',description)
     }
 
-    @Post()
-    createTask(@Body("title") title:string, @Body("description") description:string)
+    @Post()            //Replacing paramaters by their Dto (describer object that will receive the parameters)
+    createTask(@Body() createTaskDto:CreateTaskDto): Task
     {
-        return this.tasksService.createTask(title,description)
+        return this.tasksService.createTask(createTaskDto)
+    }
+
+    @Get('/:id')
+    getTaskById(@Param("id") id: string): Task
+    {
+        return this.tasksService.getTaskById(id)
+    }
+
+    @Delete("/:id")
+    deleteTask(@Param("id") id: string)
+    {
+        this.tasksService.deleteTask(id);
+        return { "message": `Task ${id} deleted successfully !` }
     }
 }

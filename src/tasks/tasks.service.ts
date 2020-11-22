@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Task, TaskStatus } from './task.model';
 import { v1 as uuid } from "uuid";
+import { CreateTaskDto } from './dto/create-task.dto';
 /**
  * A service is a class that must have
  * the BUSINESS LOGIC
@@ -19,7 +20,8 @@ export class TasksService {
         return this.tasks.slice();
     }
 
-    createTask(title: string, description: string): Task {
+    createTask(createTaskDto:CreateTaskDto): Task {
+        const {title,description} = createTaskDto;
         const task: Task = {
             id: uuid(),
             title,
@@ -29,6 +31,16 @@ export class TasksService {
         this.tasks.push(task)
         return task;
 
+    }
+
+    getTaskById(id: string): Task
+    {
+        return this.tasks.find(task => task.id === id);
+    }
+
+    deleteTask(id: string): void
+    {
+        this.tasks = this.tasks.filter(task => task.id !== id);
     }
 
 
